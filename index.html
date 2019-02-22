@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <title>Document</title>
+  <style>
+    .gray {
+    opacity: 0.7;
+  }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <input type="text" v-on:keyup.enter="addItem" v-model="itemLabel">
+    <ul>
+      <li :class="item.check ? 'gray' : ''" v-for="(item, index) in items">
+        <input type="checkbox" v-model="item.check">
+        <span v-if="!item.isEdit">{{item.label}}</span>
+        <input v-else type="text" v-model="item.label"  v-on:keyup.enter="item.isEdit = !item.isEdit">
+        <button v-on:click="delItem(index)">X</button>
+        <button v-on:click="item.isEdit = !item.isEdit">eidt</button>
+      </li>
+    </ul>
+  </div>
+  <script>
+    window.onload = function () {
+      var app = new Vue({
+        el: '#app',
+        data: {
+          itemLabel: '',
+          items: [{
+            label: 'a',
+            check: true,
+            isEdit: false
+          }, {
+            label: 'b',
+            check: false,
+            isEdit: false
+          }, ]
+        },
+        methods: {
+          addItem: () => {
+            const arr = []
+            app.items.push({
+              label: app.itemLabel,
+              check: false,
+              isEdit: false
+            })
+            app.itemLabel = ''
+          },
+          delItem: (index) => {
+            app.items.splice(index, 1)
+          }
+        },
+      })
+    }
+  </script>
+</body>
+
+</html>
